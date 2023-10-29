@@ -1,0 +1,153 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+  relationMode = "prisma"
+}
+
+enum UserRole {
+  ADMIN
+  EDITOR
+}
+
+model User {
+  id                String  @id @default(uuid())
+  name              String
+  username          String @unique
+  email             String @unique
+  image             String? @db.Text 
+  coverImage        String? @db.Text
+  password          String
+  about             String? @db.Text
+  twitter           String?
+  twitterLink       String?
+  instagramLink     String?
+  instagram         String?
+  facebook          String?
+  facebookLink      String?
+  youtube           String?
+  youtubeLink       String?
+  role              UserRole @default(EDITOR)
+  isConfirm         Boolean @default(false)
+
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+
+  articles Text[]
+  actuals Actual[]
+  contributions Contribution[]
+}
+
+model Category {
+  id String @id @default(uuid())
+  name String @unique
+  seo String @unique
+  image String @db.Text
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+
+  articles Text[]
+}
+
+model Comment {
+  id String @id @default(uuid())
+  comment String @db.Text
+  name String
+  email String
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+
+  textId String
+  text Text @relation(fields: [textId], references: [id], onDelete: Cascade)
+
+  actualId String
+  actual Actual @relation(fields: [actualId], references: [id], onDelete: Cascade)
+
+  magazineId String
+  magazine Magazine @relation(fields: [magazineId], references: [id], onDelete: Cascade)
+
+  @@index([textId])
+  @@index([actualId])
+  @@index([magazineId])
+}
+
+model Text {
+  id String @id @default(uuid())
+  title String @unique
+  seo String @unique
+  text String @db.Text
+  note String? @db.Text
+  image String @db.Text
+  comments Comment[]
+  readCount Int @default(0)
+
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+
+  userId String
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  categoryId String
+  category Category @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([categoryId])
+}
+
+model Actual {
+  id String @id @default(uuid())
+  title String @unique
+  seo String @unique
+  text String @db.Text
+  note String? @db.Text
+  image String @db.Text
+  comments Comment[]
+  readCount Int @default(0)
+
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+
+  userId String
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+}
+
+model Contribution {
+  id String @id @default(uuid())
+  title String
+  startPage Int
+  endPage Int
+  file String @db.Text
+
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+
+  userId String
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  magazineId String
+  magazine Magazine @relation(fields: [magazineId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([magazineId])
+}
+
+model Magazine {
+  id String @id @default(uuid())
+  title String
+  file String @db.Text
+  image String @db.Text
+  readCount Int @default(0)
+  comments Comment[]
+  contributions Contribution[]
+
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+}
