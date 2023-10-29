@@ -13,6 +13,17 @@ exports.getAll= async ()=>{
 exports.createUser= async(req)=>{
     try {
         const {name,username, email, password} = req.body
+        const findedUsername = await prisma.user.findUnique({where: {username}})
+        const findedEmail = await prisma.user.findUnique({where: {email}})
+
+        if (findedEmail) {
+            throw new Error('Bu email halihazırda kullanımda')
+        }
+
+        if (findedUsername) {
+            throw new Error('Bu kullanıcı adı halihazırda kullanımda')
+        }
+
         const hashedPassword = await utils.helpers.hashPassword(password)
         return await prisma.user.create({
             data: {
@@ -107,6 +118,28 @@ exports.updateUser= async (req)=>{
             data: {name, username, email, about, twitter, twitterLink, instagramLink, instagram, facebook, facebookLink, youtube, youtubeLink}})
         return json
 
+    } catch (error) {
+        throw new Error(error)
+    }
+}
+
+exports.updatePassword= async (req)=>{
+    try {
+        const {username} = req.query
+        const {currentPassword, password} = req.body
+
+        const user = await prisma.user.findUnique({where: {username}, select: {password: true}})
+        const comparePassword = await utils.helpers.comparePassword(currentPassword, user.password)
+
+        if(comparePassword) {
+            const hashedPassword = await utils.helpers.hashPassword(password)
+            const json = await prisma.user.update({where: {username}, 
+                data: {password: hashedPassword}})
+                return json
+            }
+        else {
+            throw new Error('Mevcut Şifreniz Hatalı')
+        }
     } catch (error) {
         throw new Error(error)
     }

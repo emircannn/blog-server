@@ -128,6 +128,11 @@ const createToken = (id) => {
     expiresIn: 1 * 24 * 60 * 60
   })
 }
+const createAdminToken = (id, role) => {
+  return jwt.sign({id, role},process.env.SECRET_KEY, {
+    expiresIn: 1 * 24 * 60 * 60
+  })
+}
 
 async function comparePassword(password, hashedPassword) {
   try {
@@ -175,5 +180,6 @@ module.exports = {
     createToken,
     comparePassword,
     verifyToken,
-    hashPassword
+    hashPassword,
+    createAdminToken
 }

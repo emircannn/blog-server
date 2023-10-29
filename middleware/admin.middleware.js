@@ -14,7 +14,7 @@ module.exports = (req,res,next) => {
                     return res.status(401).json({ message: 'Token doğrulama hatası. Yetkilendirme reddedildi.' });
                 }
 
-                if(decoded.role === 'admin') {
+                if(decoded.role === 'ADMIN') {
                     req.user = decoded
                     return next();
                 }
