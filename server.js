@@ -23,6 +23,8 @@ app.use(cors());
 
 app.use(`${process.env.APP_PREFIX}${consts.router.USER}`, router.userRouter.user);
 app.use(`${process.env.APP_PREFIX}${consts.router.AUTH}`, router.authRouter.auth);
+app.use(`${process.env.APP_PREFIX}${consts.router.ADMIN}`, router.adminRouter.admin);
+app.use(`${process.env.APP_PREFIX}${consts.router.CATEGORY}`, router.categoryRouter.category);
 
 connectToDb()
 
