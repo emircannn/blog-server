@@ -6,6 +6,8 @@ const controller = require('../controllers/index')
 
 router.get('/getAll', controller.categoryController.getAll)
 router.post('/add',adminToken, controller.categoryController.add)
+router.post('/edit',adminToken, controller.categoryController.edit)
+router.post('/delete',adminToken, controller.categoryController.delete)
 
 module.exports ={
     category: router

@@ -19,3 +19,21 @@ exports.add= async (req,res)=> {
         res.status(StatusCodes.BAD_REQUEST).json({timestamp: Date.now(), message: error.message, data: null, error: true})
     }
 }
+exports.edit= async (req,res)=> {
+    try {
+        const json = await categoryService.edit(req, res)
+        res.status(StatusCodes.OK).json({error: false, data: json, timestamp: Date.now(), message: "Kategori güncelledi"})
+
+    } catch (error) {
+        res.status(StatusCodes.BAD_REQUEST).json({timestamp: Date.now(), message: error.message, data: null, error: true})
+    }
+}
+exports.delete= async (req,res)=> {
+    try {
+        const json = await categoryService.delete(req, res)
+        res.status(StatusCodes.OK).json({error: false, data: json, timestamp: Date.now(), message: "Kategori silindi"})
+
+    } catch (error) {
+        res.status(StatusCodes.BAD_REQUEST).json({timestamp: Date.now(), message: error.message, data: null, error: true})
+    }
+}

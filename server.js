@@ -25,6 +25,9 @@ app.use(`${process.env.APP_PREFIX}${consts.router.USER}`, router.userRouter.user
 app.use(`${process.env.APP_PREFIX}${consts.router.AUTH}`, router.authRouter.auth);
 app.use(`${process.env.APP_PREFIX}${consts.router.ADMIN}`, router.adminRouter.admin);
 app.use(`${process.env.APP_PREFIX}${consts.router.CATEGORY}`, router.categoryRouter.category);
+app.use(`${process.env.APP_PREFIX}${consts.router.ARTICLE}`, router.articleRouter.article);
+app.use(`${process.env.APP_PREFIX}${consts.router.ACTUAL}`, router.actualRouter.actual);
+app.use(`${process.env.APP_PREFIX}${consts.router.MAGAZINE}`, router.magazineRouter.magazine);
 
 connectToDb()
 
