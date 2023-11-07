@@ -6,10 +6,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "nodemon server.js",
-    "start": "node server.js",
-    "build": "npm run compile && npm run minify",
-    "compile": "babel src -d dist",
-    "minify": "uglifyjs dist/app.js -o dist/app.min.js"
+    "start": "node server.js"
   },
   "keywords": [],
   "author": "",
