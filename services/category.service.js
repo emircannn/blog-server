@@ -24,6 +24,89 @@ exports.getAll= async ()=>{
         throw new Error(error)
     }
 }
+
+exports.getWithSeo= async (req)=>{
+    try {
+        const seo = req.query.seo
+        const page = req.query.page || 1
+        const perPage = 6
+        const skip = (page - 1) * perPage;
+        const json = await prisma.category.findUnique({
+            where: {
+                seo
+            }, 
+            select: {
+                articles: {
+                    select: {
+                        id: true
+                    }
+                },
+                image: true,
+                name: true,
+                seo: true,
+                createdAt: true
+            }
+        })
+
+        const texts = await prisma.text.findMany({
+            where: {
+                category: {
+                    seo
+                }
+            },
+            select: {
+                seo: true,
+                title: true,
+                image: true,
+                readCount: true,
+                createdAt: true,
+                user: {
+                    select: {
+                        name: true,
+                        username: true,
+                        image: true,
+                        facebookLink: true,
+                        twitterLink: true,
+                        youtubeLink: true,
+                        instagramLink: true,
+                        about: true,
+                        twitter: true,
+                    },
+                    
+                }
+            },
+            skip: skip,
+            take: perPage,
+            orderBy: {
+                createdAt: 'desc'
+            }
+        })
+
+        const otherCategory = await prisma.category.findMany({
+            where: {
+                NOT: {
+                    seo: seo
+                }
+            },
+            select: {
+                name:true,
+                image:true,
+                seo:true,
+                articles: {
+                    select: {
+                        seo:true,
+                    }
+                }
+            },
+        })
+        const totalTexts = 1
+        const totalPages = Math.ceil(totalTexts / perPage);
+        return {json, totalPages, otherCategory, texts}
+    } catch (error) {
+        throw new Error(error)
+    }
+}
+
 exports.add= async (req, res)=>{
     try {
         const {name} = req.query

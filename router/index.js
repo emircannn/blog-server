@@ -5,6 +5,10 @@ const categoryRouter = require('./category.router')
 const articleRouter = require('./article.router')
 const actualRouter = require('./actual.router')
 const magazineRouter = require('./magazine.router')
+const contributionRouter = require('./contribution.router')
+const settingsRouter = require('./settings.router')
+const homeRouter = require('./home.router')
+const commentRouter = require('./comment.router')
 
 module.exports = {
     userRouter,
@@ -13,5 +17,9 @@ module.exports = {
     categoryRouter,
     articleRouter,
     actualRouter,
-    magazineRouter
+    magazineRouter,
+    contributionRouter,
+    settingsRouter,
+    homeRouter,
+    commentRouter
 }

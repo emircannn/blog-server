@@ -28,6 +28,10 @@ app.use(`${process.env.APP_PREFIX}${consts.router.CATEGORY}`, router.categoryRou
 app.use(`${process.env.APP_PREFIX}${consts.router.ARTICLE}`, router.articleRouter.article);
 app.use(`${process.env.APP_PREFIX}${consts.router.ACTUAL}`, router.actualRouter.actual);
 app.use(`${process.env.APP_PREFIX}${consts.router.MAGAZINE}`, router.magazineRouter.magazine);
+app.use(`${process.env.APP_PREFIX}${consts.router.Contribution}`, router.contributionRouter.contribution);
+app.use(`${process.env.APP_PREFIX}${consts.router.SETTINGS}`, router.settingsRouter.settings);
+app.use(`${process.env.APP_PREFIX}${consts.router.HOME}`, router.homeRouter.home);
+app.use(`${process.env.APP_PREFIX}${consts.router.COMMENT}`, router.commentRouter.comment);
 
 connectToDb()
 

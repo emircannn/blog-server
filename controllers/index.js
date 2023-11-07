@@ -5,6 +5,10 @@ const categoryController = require('./category.controller')
 const articleController = require('./article.controller')
 const actual = require('./actual.controller')
 const magazine = require('./magazine.controller')
+const contribution = require('./contribution.controller')
+const settings = require('./settings.controller')
+const home = require('./home.controller')
+const comment = require('./comment.controller')
 
 module.exports={
     userController,
@@ -13,5 +17,9 @@ module.exports={
     categoryController,
     articleController,
     actual,
-    magazine
+    magazine,
+    contribution,
+    settings,
+    home,
+    comment
 }

@@ -3,7 +3,7 @@ const utils = require('../utils/index')
 
 exports.getAll= async (req)=>{
     try {
-        const {page} = req.query || 1
+        const page = req.query.page || 1
         const perPage = 6
         const skip = (page - 1) * perPage;
         const json = await prisma.actual.findMany({
@@ -37,6 +37,45 @@ exports.getAll= async (req)=>{
         const totalTexts = await prisma.actual.count()
         const totalPages = Math.ceil(totalTexts / perPage);
         return {json, totalPages}
+    } catch (error) {
+        throw new Error(error)
+    }
+}
+
+exports.getOtherTexts= async (req)=>{
+    try {
+        const {seo} = req.query
+        const json = await prisma.actual.findMany({
+            where: {
+                NOT: {
+                    seo
+                }
+            },
+            select: {
+                title: true,
+                seo: true,
+                createdAt: true,
+                readCount: true,
+                user: {
+                    select: {
+                        name: true,
+                        username: true,
+                        image: true,
+                        facebookLink: true,
+                        twitterLink: true,
+                        youtubeLink: true,
+                        instagramLink: true,
+                        about: true,
+                        twitter: true,
+                    }
+                }
+            },
+            take: 5,
+            orderBy: {
+                createdAt: 'desc'
+            }
+        })
+        return json
     } catch (error) {
         throw new Error(error)
     }
@@ -201,7 +240,14 @@ exports.getTextWithSeo = async (req, res) => {
         const {seo} = req.query
         return await prisma.actual.update({where: {seo}, data: { readCount: { increment: 1 } },
         select: {
-            comments: true,
+            comments: {
+                select: {
+                    id: true,
+                    comment: true,
+                    name: true,
+                    createdAt: true,
+                }
+            },
             createdAt: true,
             image: true,
             note: true,

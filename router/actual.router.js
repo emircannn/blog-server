@@ -6,6 +6,7 @@ const controller = require('../controllers/index')
 const { upload } = require('../middleware/fileupload.middleware');
 
 router.get('/getAll', controller.actual.getAll)
+router.get('/getOtherTexts', controller.actual.getOtherTexts)
 router.get('/getText', controller.actual.getText)
 router.get('/getTextWithSeo', controller.actual.getTextWithSeo)
 router.get('/getUserText', controller.actual.getUserText)

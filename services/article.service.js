@@ -1,10 +1,9 @@
 const {prisma} = require('../db/connectDb')
 const utils = require('../utils/index')
-const fileService = require('./file.service')
 
 exports.getAll= async (req)=>{
     try {
-        const {page} = req.query || 1
+        const page = req.query.page || 1
         const perPage = 6
         const skip = (page - 1) * perPage;
         const json = await prisma.text.findMany({
@@ -34,7 +33,6 @@ exports.getAll= async (req)=>{
                         instagramLink: true,
                         youtubeLink: true,
                         about: true,
-
                     }
                 }
             },
@@ -221,9 +219,48 @@ exports.getTextWithSeo = async (req, res) => {
         const {seo} = req.query
         return await prisma.text.update({where: {seo}, data: { readCount: { increment: 1 } },
         select: {
-            category: true,
+            category: {
+                select: {
+                    image: true,
+                    name: true,
+                    seo: true,
+                    articles: {
+                        where: {
+                            NOT: {
+                                seo
+                            }
+                        },
+                        take: 5,
+                        select: {
+                            title: true,
+                            seo: true,
+                            readCount: true,
+                            createdAt: true,
+                            user: {
+                                select: {
+                                    name: true,
+                                    username: true,
+                                    image: true,
+                                    facebookLink: true,
+                                    twitterLink: true,
+                                    youtubeLink: true,
+                                    instagramLink: true,
+                                    about: true,
+                                    twitter: true,
+                                }
+                            }
+                        }
+                    }
+                }
+            },
             categoryId: true,
-            comments: true,
+            comments: {
+                select: {
+                    name: true,
+                    createdAt: true,
+                    comment: true,
+                }
+            },
             createdAt: true,
             image: true,
             note: true,

@@ -1,11 +1,34 @@
 const {StatusCodes} = require('http-status-codes')
-const utils = require('../utils/index')
 const userService = require('../services/index').user
 
 exports.getAll= async (req,res)=> {
     try {
             const json = await userService.getAll(req)
             res.status(StatusCodes.OK).json({error: false, data: json,timestamp: Date.now(), message: "İşlem Başarılı"})
+    } catch (error) {
+        res.status(StatusCodes.BAD_REQUEST).json({timestamp: Date.now(), message: error.message, data: null, error: true})
+    }
+}
+exports.getUserTexts= async (req,res)=> {
+    try {
+            const json = await userService.getUserTexts(req)
+            res.status(StatusCodes.OK).json({error: false, data: json.json, totalPages:json.totalPages, timestamp: Date.now(), message: "İşlem Başarılı"})
+    } catch (error) {
+        res.status(StatusCodes.BAD_REQUEST).json({timestamp: Date.now(), message: error.message, data: null, error: true})
+    }
+}
+exports.getUserActual= async (req,res)=> {
+    try {
+            const json = await userService.getUserActual(req)
+            res.status(StatusCodes.OK).json({error: false, data: json.json, totalPages:json.totalPages, timestamp: Date.now(), message: "İşlem Başarılı"})
+    } catch (error) {
+        res.status(StatusCodes.BAD_REQUEST).json({timestamp: Date.now(), message: error.message, data: null, error: true})
+    }
+}
+exports.getUserContribution= async (req,res)=> {
+    try {
+            const json = await userService.getUserContribution(req)
+            res.status(StatusCodes.OK).json({error: false, data: json.json, totalPages:json.totalPages, timestamp: Date.now(), message: "İşlem Başarılı"})
     } catch (error) {
         res.status(StatusCodes.BAD_REQUEST).json({timestamp: Date.now(), message: error.message, data: null, error: true})
     }

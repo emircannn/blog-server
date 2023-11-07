@@ -44,6 +44,23 @@ exports.getUser= async(req)=>{
         return await prisma.user.findUnique({
             where: {
                 username
+            },
+            select: {
+                about:true,
+                coverImage:true,
+                image:true,
+                email:true,
+                username: true,
+                name:true,
+                twitter:true,
+                twitterLink:true,
+                instagram:true,
+                instagramLink:true,
+                youtube:true,
+                youtubeLink:true,
+                createdAt:true,
+                facebook:true,
+                facebookLink:true,
             }
         })
     } catch (error) {
@@ -140,6 +157,150 @@ exports.updatePassword= async (req)=>{
         else {
             throw new Error('Mevcut Şifreniz Hatalı')
         }
+    } catch (error) {
+        throw new Error(error)
+    }
+}
+
+exports.getUserTexts= async(req)=>{
+    try {
+        const {username} = req.query
+        const page = req.query.page || 1
+        const perPage = 6
+        const skip = (page - 1) * perPage;
+        const json = await prisma.text.findMany({
+            where: {
+                user: {
+                    username
+                }
+            },
+            select: {
+                category: {
+                    select: {
+                        image: true,
+                        name: true,
+                        id: true,
+                        seo: true,
+                    },
+                },
+                createdAt: true,
+                image: true,
+                id: true,
+                readCount: true,
+                seo: true,
+                title: true,
+                user: {
+                    select: {
+                        image: true,
+                        id: true,
+                        name: true,
+                        username: true,
+                        twitterLink: true,
+                        facebookLink: true,
+                        instagramLink: true,
+                        youtubeLink: true,
+                        about: true,
+                    }
+                }
+            },
+            skip: skip,
+            take: perPage,
+            orderBy: {
+                createdAt: 'desc'
+            }
+        })
+        const totalTexts = await prisma.text.count({where: {user: {username}}})
+        const totalPages = Math.ceil(totalTexts / perPage);
+        return {json, totalPages}
+    } catch (error) {
+        throw new Error(error)
+    }
+}
+
+exports.getUserActual= async(req)=>{
+    try {
+        const {username} = req.query
+        const page = req.query.page || 1
+        const perPage = 6
+        const skip = (page - 1) * perPage;
+        const json = await prisma.actual.findMany({
+            where: {
+                user: {
+                    username
+                }
+            },
+            select: {
+                createdAt: true,
+                image: true,
+                id: true,
+                readCount: true,
+                seo: true,
+                title: true,
+                user: {
+                    select: {
+                        image: true,
+                        id: true,
+                        name: true,
+                        username: true,
+                        twitterLink: true,
+                        facebookLink: true,
+                        instagramLink: true,
+                        youtubeLink: true,
+                        about: true,
+                    }
+                }
+            },
+            skip: skip,
+            take: perPage,
+            orderBy: {
+                createdAt: 'desc'
+            }
+        })
+        const totalTexts = await prisma.actual.count({where: {user: {username}}})
+        const totalPages = Math.ceil(totalTexts / perPage);
+        return {json, totalPages}
+    } catch (error) {
+        throw new Error(error)
+    }
+}
+
+exports.getUserContribution= async(req)=>{
+    try {
+        const {username} = req.query
+        const page = req.query.page || 1
+        const perPage = 6
+        const skip = (page - 1) * perPage;
+        const json = await prisma.contribution.findMany({
+            where: {
+                user: {
+                    username
+                }
+            },
+            select: {
+                title: true,
+                endPage: true,
+                startPage: true,
+                file: true,
+                createdAt: true,
+                magazine: {
+                    select: {
+                        file: true,
+                        seo: true,
+                        title: true,
+                        readCount:true,
+                        image: true,
+                    }
+                }
+            },
+            skip: skip,
+            take: perPage,
+            orderBy: {
+                createdAt: 'desc'
+            }
+        })
+        const totalTexts = await prisma.contribution.count({where: {user: {username}}})
+        const totalPages = Math.ceil(totalTexts / perPage);
+        return {json, totalPages}
     } catch (error) {
         throw new Error(error)
     }

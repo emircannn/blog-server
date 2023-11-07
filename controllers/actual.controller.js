@@ -10,6 +10,15 @@ exports.getAll= async (req,res)=> {
         res.status(StatusCodes.BAD_REQUEST).json({timestamp: Date.now(), message: error.message, data: null, error: true})
     }
 }
+exports.getOtherTexts= async (req,res)=> {
+    try {
+        const json = await actualService.getOtherTexts(req)
+        res.status(StatusCodes.OK).json({error: false, data: json, timestamp: Date.now(), message: "İşlem Başarılı"})
+
+    } catch (error) {
+        res.status(StatusCodes.BAD_REQUEST).json({timestamp: Date.now(), message: error.message, data: null, error: true})
+    }
+}
 exports.getText= async (req,res)=> {
     try {
         const json = await actualService.getText(req)

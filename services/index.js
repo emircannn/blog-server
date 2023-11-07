@@ -5,6 +5,10 @@ const categoryService = require('./category.service')
 const article = require('./article.service')
 const actual = require('./actual.service')
 const magazine = require('./magazine.service')
+const contribution = require('./contribution.service')
+const settings = require('./settings.service')
+const home = require('./home.service')
+const comment = require('./comment.service')
 
 module.exports = {
     user: userService,
@@ -13,5 +17,9 @@ module.exports = {
     category: categoryService,
     article,
     actual,
-    magazine
+    magazine,
+    contribution,
+    settings,
+    home,
+    comment
 }
