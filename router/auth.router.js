@@ -1,7 +1,5 @@
 const express = require('express');
-const router = express.Router();
-const verifyToken = require('../middleware/auth.middleware')    
-const adminToken = require('../middleware/admin.middleware')    
+const router = express.Router();   
 const controller = require('../controllers/index')
 
 router.get('/verifyUserToken', controller.authController.verifyUserToken)

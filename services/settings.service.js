@@ -1,5 +1,4 @@
 const {prisma} = require('../db/connectDb')
-const utils = require('../utils/index')
 
 exports.create= async (req)=>{
     try {
